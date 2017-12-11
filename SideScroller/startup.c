@@ -7,22 +7,54 @@
 #include "object.h"
 #include "keyboard.h"
 
-GEOMETRY ball_geometry =
-{
-	12,
-	4,4,
+GEOMETRY player_geometry = {
+	13,
+	5,4,
 	{
-		{0,1}, {0,2}, {1,0}, {1,1},
-		{1,2}, {1,3}, {2,0}, {2,1},
-		{2,2}, {2,3}, {3,1}, {3,2}
+		{0,0}, 	{0,1}, 
+				{1,1}, 	{2,1}, 	{3,1},
+				{1,2}, 	{2,2}, 			{4,2}, 
+		{0,3}, 	{1,3}, 	{2,3}, 	{3,3}, 	{4,3}
 	}
 };
 
-static OBJECT ball =
-{
-	&ball_geometry,
+GEOMETRY proj_geometry = {
+	4,
+	2,2,
+	{
+		{0,0},	{0,1},
+		{1,0},	{1,1}
+	}
+};
+
+GEOMETRY enemy_geometry = {
+	8,
+	3,7,
+	{
+		{0,0},
+				{1,1},
+						{2,2},
+				{1,3}, 	{2,3},
+						{2,4},
+				{1,5},
+		{0,6}
+	}
+};
+
+static OBJECT player = {
+	&player_geometry,
 	0,0,
 	1,1,
+	draw_object,
+	clear_object,
+	move_object,
+	set_object_speed
+};
+
+static OBJECT projectile = {
+	&proj_geometry,
+	10, 0,
+	0, 64,
 	draw_object,
 	clear_object,
 	move_object,
@@ -49,8 +81,8 @@ void init_app(void) {
 }
 
 int main(int argc, char **argv) {
-	char c,hspd,vspd;
-	POBJECT p = &ball;
+	char c;
+	POBJECT player = &player;
 	
 	init_app();
 	graphic_initialize();
@@ -59,19 +91,17 @@ int main(int argc, char **argv) {
 		graphic_clear_screen();
 	#endif
 	
-	p->set_speed(p,4,1);
+	player->set_speed(player,4,1);
 	while(1) {
-		p->move(p);
+		player->move(player);
 		delay_milli(40);
 		c = keyboard();
 		
 		switch(c) {
-			case 6: p->set_speed(p,2,0); break;
-			case 4: p->set_speed(p,-2,0); break;
-			case 2: p->set_speed(p,0,-2); break;
-			case 8: p->set_speed(p,0,2); break;
-			case 5: break;
-			default: p->set_speed(p,0,0);
+			case 2: player->set_speed(player,0,-2); break;
+			case 8: player->set_speed(player,0,2); break;
+			//case 5: break;
+			default: player->set_speed(player,0,0);
 		}
 	}
 }

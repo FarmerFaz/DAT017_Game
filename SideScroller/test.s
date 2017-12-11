@@ -8,405 +8,420 @@
    8              		.eabi_attribute 30, 6
    9              		.eabi_attribute 34, 0
   10              		.eabi_attribute 18, 4
-  11              		.file	"object.c"
+  11              		.file	"startup.c"
   12              		.text
   13              	.Ltext0:
   14              		.cfi_sections	.debug_frame
-  15              		.align	1
-  16              		.global	set_object_speed
-  17              		.syntax unified
-  18              		.code	16
-  19              		.thumb_func
-  20              		.fpu softvfp
-  22              	set_object_speed:
-  23              	.LFB0:
-  24              		.file 1 "C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/
-   1:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** #define	MAX_POINTS	20
-   2:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** 
-   3:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** typedef struct tPoint {
-   4:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** 	unsigned char x;
-   5:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** 	unsigned char y;
-   6:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** } POINT;
-   7:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** 
-   8:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** typedef struct tGeometry {
-   9:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** 	int numpoints;
-  10:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** 	int sizex;
-  11:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** 	int sizey;
-  12:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** 	POINT px [MAX_POINTS];
-  13:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** } GEOMETRY, *PGEOMETRY;
-  14:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** 
-  15:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** typedef struct tObj {
-  16:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** 	PGEOMETRY geo;
-  17:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** 	int dirx, diry;
-  18:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** 	int posx, posy;
-  19:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** 	void(*draw)(struct tObj *);
-  20:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** 	void(*clear)(struct tObj *);
-  21:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** 	void(*move)(struct tObj *);
-  22:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** 	void(*set_speed)(struct tObj *, int, int);
-  23:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** } OBJECT, *POBJECT;
-  24:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** 
-  25:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** // changes the objects speed
-  26:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** void set_object_speed(POBJECT o, int speedx, int speedy) {
-  25              		.loc 1 26 0
-  26              		.cfi_startproc
-  27              		@ args = 0, pretend = 0, frame = 16
-  28              		@ frame_needed = 1, uses_anonymous_args = 0
-  29 0000 80B5     		push	{r7, lr}
-  30              		.cfi_def_cfa_offset 8
-  31              		.cfi_offset 7, -8
-  32              		.cfi_offset 14, -4
-  33 0002 84B0     		sub	sp, sp, #16
-  34              		.cfi_def_cfa_offset 24
-  35 0004 00AF     		add	r7, sp, #0
-  36              		.cfi_def_cfa_register 7
-  37 0006 F860     		str	r0, [r7, #12]
-  38 0008 B960     		str	r1, [r7, #8]
-  39 000a 7A60     		str	r2, [r7, #4]
-  27:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** 	o->dirx = speedx;
-  40              		.loc 1 27 0
-  41 000c FB68     		ldr	r3, [r7, #12]
-  42 000e BA68     		ldr	r2, [r7, #8]
-  43 0010 5A60     		str	r2, [r3, #4]
-  28:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** 	o->diry = speedy;
-  44              		.loc 1 28 0
-  45 0012 FB68     		ldr	r3, [r7, #12]
-  46 0014 7A68     		ldr	r2, [r7, #4]
-  47 0016 9A60     		str	r2, [r3, #8]
-  29:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** }
-  48              		.loc 1 29 0
-  49 0018 C046     		nop
-  50 001a BD46     		mov	sp, r7
-  51 001c 04B0     		add	sp, sp, #16
-  52              		@ sp needed
-  53 001e 80BD     		pop	{r7, pc}
-  54              		.cfi_endproc
-  55              	.LFE0:
-  57              		.align	1
-  58              		.global	draw_object
-  59              		.syntax unified
-  60              		.code	16
-  61              		.thumb_func
-  62              		.fpu softvfp
-  64              	draw_object:
-  65              	.LFB1:
-  30:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** 
-  31:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** // draws the object to the screen through the pixel() function
-  32:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** void draw_object(POBJECT o) {
-  66              		.loc 1 32 0
-  67              		.cfi_startproc
-  68              		@ args = 0, pretend = 0, frame = 24
-  69              		@ frame_needed = 1, uses_anonymous_args = 0
-  70 0020 80B5     		push	{r7, lr}
-  71              		.cfi_def_cfa_offset 8
-  72              		.cfi_offset 7, -8
-  73              		.cfi_offset 14, -4
-  74 0022 86B0     		sub	sp, sp, #24
-  75              		.cfi_def_cfa_offset 32
-  76 0024 00AF     		add	r7, sp, #0
-  77              		.cfi_def_cfa_register 7
-  78 0026 7860     		str	r0, [r7, #4]
-  33:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** 	int xx,yy;
-  34:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** 	char offsx, offsy;
-  35:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** 	xx = o->posx;
-  79              		.loc 1 35 0
-  80 0028 7B68     		ldr	r3, [r7, #4]
-  81 002a DB68     		ldr	r3, [r3, #12]
-  82 002c 3B61     		str	r3, [r7, #16]
-  36:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** 	yy = o->posy;
-  83              		.loc 1 36 0
-  84 002e 7B68     		ldr	r3, [r7, #4]
-  85 0030 1B69     		ldr	r3, [r3, #16]
-  86 0032 FB60     		str	r3, [r7, #12]
-  87              	.LBB2:
-  37:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** 
-  38:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** 	for (int i = 0; i < o->geo->numpoints; i++) {
-  88              		.loc 1 38 0
-  89 0034 0023     		movs	r3, #0
-  90 0036 7B61     		str	r3, [r7, #20]
-  91 0038 26E0     		b	.L3
-  92              	.L4:
-  93              	.LBB3:
-  39:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** 		offsx = o->geo->px[i].x;
-  94              		.loc 1 39 0 discriminator 3
-  95 003a 7B68     		ldr	r3, [r7, #4]
-  96 003c 1968     		ldr	r1, [r3]
-  97 003e 0B23     		movs	r3, #11
-  98 0040 FB18     		adds	r3, r7, r3
-  99 0042 7A69     		ldr	r2, [r7, #20]
- 100 0044 0432     		adds	r2, r2, #4
- 101 0046 5200     		lsls	r2, r2, #1
- 102 0048 8A18     		adds	r2, r1, r2
- 103 004a 0432     		adds	r2, r2, #4
- 104 004c 1278     		ldrb	r2, [r2]
- 105 004e 1A70     		strb	r2, [r3]
-  40:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** 		offsy = o->geo->px[i].y;
- 106              		.loc 1 40 0 discriminator 3
- 107 0050 7B68     		ldr	r3, [r7, #4]
- 108 0052 1968     		ldr	r1, [r3]
- 109 0054 0A23     		movs	r3, #10
- 110 0056 FB18     		adds	r3, r7, r3
- 111 0058 7A69     		ldr	r2, [r7, #20]
- 112 005a 0432     		adds	r2, r2, #4
- 113 005c 5200     		lsls	r2, r2, #1
- 114 005e 8A18     		adds	r2, r1, r2
- 115 0060 0532     		adds	r2, r2, #5
- 116 0062 1278     		ldrb	r2, [r2]
- 117 0064 1A70     		strb	r2, [r3]
-  41:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** 		
-  42:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** 		pixel(xx+offsx,yy+offsy, 1);
- 118              		.loc 1 42 0 discriminator 3
- 119 0066 0B23     		movs	r3, #11
- 120 0068 FB18     		adds	r3, r7, r3
- 121 006a 1A78     		ldrb	r2, [r3]
- 122 006c 3B69     		ldr	r3, [r7, #16]
- 123 006e D018     		adds	r0, r2, r3
- 124 0070 0A23     		movs	r3, #10
- 125 0072 FB18     		adds	r3, r7, r3
- 126 0074 1A78     		ldrb	r2, [r3]
- 127 0076 FB68     		ldr	r3, [r7, #12]
- 128 0078 D318     		adds	r3, r2, r3
- 129 007a 0122     		movs	r2, #1
- 130 007c 1900     		movs	r1, r3
- 131 007e FFF7FEFF 		bl	pixel
- 132              	.LBE3:
-  38:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** 		offsx = o->geo->px[i].x;
- 133              		.loc 1 38 0 discriminator 3
- 134 0082 7B69     		ldr	r3, [r7, #20]
- 135 0084 0133     		adds	r3, r3, #1
- 136 0086 7B61     		str	r3, [r7, #20]
- 137              	.L3:
-  38:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** 		offsx = o->geo->px[i].x;
- 138              		.loc 1 38 0 is_stmt 0 discriminator 1
- 139 0088 7B68     		ldr	r3, [r7, #4]
- 140 008a 1B68     		ldr	r3, [r3]
- 141 008c 1A68     		ldr	r2, [r3]
- 142 008e 7B69     		ldr	r3, [r7, #20]
- 143 0090 9A42     		cmp	r2, r3
- 144 0092 D2DC     		bgt	.L4
- 145              	.LBE2:
-  43:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** 	}
-  44:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** }
- 146              		.loc 1 44 0 is_stmt 1
- 147 0094 C046     		nop
- 148 0096 BD46     		mov	sp, r7
- 149 0098 06B0     		add	sp, sp, #24
- 150              		@ sp needed
- 151 009a 80BD     		pop	{r7, pc}
- 152              		.cfi_endproc
- 153              	.LFE1:
- 155              		.align	1
- 156              		.global	clear_object
- 157              		.syntax unified
- 158              		.code	16
- 159              		.thumb_func
- 160              		.fpu softvfp
- 162              	clear_object:
- 163              	.LFB2:
-  45:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** 
-  46:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** // clears the object from the screen through the pixel() function
-  47:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** void clear_object(POBJECT o) {
- 164              		.loc 1 47 0
- 165              		.cfi_startproc
- 166              		@ args = 0, pretend = 0, frame = 32
- 167              		@ frame_needed = 1, uses_anonymous_args = 0
- 168 009c 80B5     		push	{r7, lr}
- 169              		.cfi_def_cfa_offset 8
- 170              		.cfi_offset 7, -8
- 171              		.cfi_offset 14, -4
- 172 009e 88B0     		sub	sp, sp, #32
- 173              		.cfi_def_cfa_offset 40
- 174 00a0 00AF     		add	r7, sp, #0
- 175              		.cfi_def_cfa_register 7
- 176 00a2 7860     		str	r0, [r7, #4]
-  48:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** 	int xx,yy,offsx,offsy;
-  49:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** 	xx = o->posx;
- 177              		.loc 1 49 0
- 178 00a4 7B68     		ldr	r3, [r7, #4]
- 179 00a6 DB68     		ldr	r3, [r3, #12]
- 180 00a8 BB61     		str	r3, [r7, #24]
-  50:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** 	yy = o->posy;
- 181              		.loc 1 50 0
- 182 00aa 7B68     		ldr	r3, [r7, #4]
- 183 00ac 1B69     		ldr	r3, [r3, #16]
- 184 00ae 7B61     		str	r3, [r7, #20]
- 185              	.LBB4:
-  51:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** 
-  52:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** 	for (int i = 0; i < o->geo->numpoints; i++) {
- 186              		.loc 1 52 0
- 187 00b0 0023     		movs	r3, #0
- 188 00b2 FB61     		str	r3, [r7, #28]
- 189 00b4 1EE0     		b	.L6
- 190              	.L7:
- 191              	.LBB5:
-  53:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** 		offsx = o->geo->px[i].x;
- 192              		.loc 1 53 0 discriminator 3
- 193 00b6 7B68     		ldr	r3, [r7, #4]
- 194 00b8 1A68     		ldr	r2, [r3]
- 195 00ba FB69     		ldr	r3, [r7, #28]
- 196 00bc 0433     		adds	r3, r3, #4
- 197 00be 5B00     		lsls	r3, r3, #1
- 198 00c0 D318     		adds	r3, r2, r3
- 199 00c2 0433     		adds	r3, r3, #4
- 200 00c4 1B78     		ldrb	r3, [r3]
- 201 00c6 3B61     		str	r3, [r7, #16]
-  54:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** 		offsy = o->geo->px[i].y;
- 202              		.loc 1 54 0 discriminator 3
- 203 00c8 7B68     		ldr	r3, [r7, #4]
- 204 00ca 1A68     		ldr	r2, [r3]
- 205 00cc FB69     		ldr	r3, [r7, #28]
- 206 00ce 0433     		adds	r3, r3, #4
- 207 00d0 5B00     		lsls	r3, r3, #1
- 208 00d2 D318     		adds	r3, r2, r3
- 209 00d4 0533     		adds	r3, r3, #5
- 210 00d6 1B78     		ldrb	r3, [r3]
- 211 00d8 FB60     		str	r3, [r7, #12]
-  55:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** 		
-  56:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** 		pixel(xx+offsx,yy+offsy, 0);
- 212              		.loc 1 56 0 discriminator 3
- 213 00da BA69     		ldr	r2, [r7, #24]
- 214 00dc 3B69     		ldr	r3, [r7, #16]
- 215 00de D018     		adds	r0, r2, r3
- 216 00e0 7A69     		ldr	r2, [r7, #20]
- 217 00e2 FB68     		ldr	r3, [r7, #12]
- 218 00e4 D318     		adds	r3, r2, r3
- 219 00e6 0022     		movs	r2, #0
- 220 00e8 1900     		movs	r1, r3
- 221 00ea FFF7FEFF 		bl	pixel
- 222              	.LBE5:
-  52:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** 		offsx = o->geo->px[i].x;
- 223              		.loc 1 52 0 discriminator 3
- 224 00ee FB69     		ldr	r3, [r7, #28]
- 225 00f0 0133     		adds	r3, r3, #1
- 226 00f2 FB61     		str	r3, [r7, #28]
- 227              	.L6:
-  52:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** 		offsx = o->geo->px[i].x;
- 228              		.loc 1 52 0 is_stmt 0 discriminator 1
- 229 00f4 7B68     		ldr	r3, [r7, #4]
- 230 00f6 1B68     		ldr	r3, [r3]
- 231 00f8 1A68     		ldr	r2, [r3]
- 232 00fa FB69     		ldr	r3, [r7, #28]
- 233 00fc 9A42     		cmp	r2, r3
- 234 00fe DADC     		bgt	.L7
- 235              	.LBE4:
-  57:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** 	}
-  58:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** }
- 236              		.loc 1 58 0 is_stmt 1
- 237 0100 C046     		nop
- 238 0102 BD46     		mov	sp, r7
- 239 0104 08B0     		add	sp, sp, #32
- 240              		@ sp needed
- 241 0106 80BD     		pop	{r7, pc}
- 242              		.cfi_endproc
- 243              	.LFE2:
- 245              		.align	1
- 246              		.global	move_object
- 247              		.syntax unified
- 248              		.code	16
- 249              		.thumb_func
- 250              		.fpu softvfp
- 252              	move_object:
- 253              	.LFB3:
-  59:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** 
-  60:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** // clears from pos A and then moves to pos B, taking in consideration walls (or in this case the ed
-  61:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** void move_object(POBJECT o) {
- 254              		.loc 1 61 0
- 255              		.cfi_startproc
- 256              		@ args = 0, pretend = 0, frame = 8
- 257              		@ frame_needed = 1, uses_anonymous_args = 0
- 258 0108 80B5     		push	{r7, lr}
- 259              		.cfi_def_cfa_offset 8
- 260              		.cfi_offset 7, -8
- 261              		.cfi_offset 14, -4
- 262 010a 82B0     		sub	sp, sp, #8
- 263              		.cfi_def_cfa_offset 16
- 264 010c 00AF     		add	r7, sp, #0
- 265              		.cfi_def_cfa_register 7
- 266 010e 7860     		str	r0, [r7, #4]
-  62:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** 	clear_object(o);
- 267              		.loc 1 62 0
- 268 0110 7B68     		ldr	r3, [r7, #4]
- 269 0112 1800     		movs	r0, r3
- 270 0114 FFF7FEFF 		bl	clear_object
-  63:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** 	o->posx += o->dirx;
- 271              		.loc 1 63 0
- 272 0118 7B68     		ldr	r3, [r7, #4]
- 273 011a DA68     		ldr	r2, [r3, #12]
- 274 011c 7B68     		ldr	r3, [r7, #4]
- 275 011e 5B68     		ldr	r3, [r3, #4]
- 276 0120 D218     		adds	r2, r2, r3
- 277 0122 7B68     		ldr	r3, [r7, #4]
- 278 0124 DA60     		str	r2, [r3, #12]
-  64:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** 	o->posy += o->diry;
- 279              		.loc 1 64 0
- 280 0126 7B68     		ldr	r3, [r7, #4]
- 281 0128 1A69     		ldr	r2, [r3, #16]
- 282 012a 7B68     		ldr	r3, [r7, #4]
- 283 012c 9B68     		ldr	r3, [r3, #8]
- 284 012e D218     		adds	r2, r2, r3
- 285 0130 7B68     		ldr	r3, [r7, #4]
- 286 0132 1A61     		str	r2, [r3, #16]
-  65:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** 	
-  66:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** 	if(o->posx < 1 || o->posx + o->geo->sizex > 128)
- 287              		.loc 1 66 0
- 288 0134 7B68     		ldr	r3, [r7, #4]
- 289 0136 DB68     		ldr	r3, [r3, #12]
- 290 0138 002B     		cmp	r3, #0
- 291 013a 07DD     		ble	.L9
- 292              		.loc 1 66 0 is_stmt 0 discriminator 1
- 293 013c 7B68     		ldr	r3, [r7, #4]
- 294 013e DA68     		ldr	r2, [r3, #12]
- 295 0140 7B68     		ldr	r3, [r7, #4]
- 296 0142 1B68     		ldr	r3, [r3]
- 297 0144 5B68     		ldr	r3, [r3, #4]
- 298 0146 D318     		adds	r3, r2, r3
- 299 0148 802B     		cmp	r3, #128
- 300 014a 04DD     		ble	.L10
- 301              	.L9:
-  67:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** 		o->dirx = -o->dirx;
- 302              		.loc 1 67 0 is_stmt 1
- 303 014c 7B68     		ldr	r3, [r7, #4]
- 304 014e 5B68     		ldr	r3, [r3, #4]
- 305 0150 5A42     		rsbs	r2, r3, #0
- 306 0152 7B68     		ldr	r3, [r7, #4]
- 307 0154 5A60     		str	r2, [r3, #4]
- 308              	.L10:
-  68:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** 	if(o->posy < 1 || o->posy + o->geo->sizey > 64)
- 309              		.loc 1 68 0
- 310 0156 7B68     		ldr	r3, [r7, #4]
- 311 0158 1B69     		ldr	r3, [r3, #16]
- 312 015a 002B     		cmp	r3, #0
- 313 015c 07DD     		ble	.L11
- 314              		.loc 1 68 0 is_stmt 0 discriminator 1
- 315 015e 7B68     		ldr	r3, [r7, #4]
- 316 0160 1A69     		ldr	r2, [r3, #16]
- 317 0162 7B68     		ldr	r3, [r7, #4]
- 318 0164 1B68     		ldr	r3, [r3]
- 319 0166 9B68     		ldr	r3, [r3, #8]
- 320 0168 D318     		adds	r3, r2, r3
- 321 016a 402B     		cmp	r3, #64
- 322 016c 04DD     		ble	.L12
- 323              	.L11:
-  69:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** 		o->diry = -o->diry;
- 324              		.loc 1 69 0 is_stmt 1
- 325 016e 7B68     		ldr	r3, [r7, #4]
- 326 0170 9B68     		ldr	r3, [r3, #8]
- 327 0172 5A42     		rsbs	r2, r3, #0
- 328 0174 7B68     		ldr	r3, [r7, #4]
- 329 0176 9A60     		str	r2, [r3, #8]
- 330              	.L12:
-  70:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** 	
-  71:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** 	draw_object(o);
- 331              		.loc 1 71 0
- 332 0178 7B68     		ldr	r3, [r7, #4]
- 333 017a 1800     		movs	r0, r3
- 334 017c FFF7FEFF 		bl	draw_object
-  72:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\object.c **** }...
- 335              		.loc 1 72 0
- 336 0180 C046     		nop
- 337 0182 BD46     		mov	sp, r7
- 338 0184 02B0     		add	sp, sp, #8
- 339              		@ sp needed
- 340 0186 80BD     		pop	{r7, pc}
- 341              		.cfi_endproc
- 342              	.LFE3:
- 344              	.Letext0:
+  15              		.global	player_geometry
+  16              		.data
+  17              		.align	2
+  20              	player_geometry:
+  21 0000 0D000000 		.word	13
+  22 0004 05000000 		.word	5
+  23 0008 04000000 		.word	4
+  24 000c 00       		.byte	0
+  25 000d 00       		.byte	0
+  26 000e 00       		.byte	0
+  27 000f 01       		.byte	1
+  28 0010 01       		.byte	1
+  29 0011 01       		.byte	1
+  30 0012 02       		.byte	2
+  31 0013 01       		.byte	1
+  32 0014 03       		.byte	3
+  33 0015 01       		.byte	1
+  34 0016 01       		.byte	1
+  35 0017 02       		.byte	2
+  36 0018 02       		.byte	2
+  37 0019 02       		.byte	2
+  38 001a 04       		.byte	4
+  39 001b 02       		.byte	2
+  40 001c 00       		.byte	0
+  41 001d 03       		.byte	3
+  42 001e 01       		.byte	1
+  43 001f 03       		.byte	3
+  44 0020 02       		.byte	2
+  45 0021 03       		.byte	3
+  46 0022 03       		.byte	3
+  47 0023 03       		.byte	3
+  48 0024 04       		.byte	4
+  49 0025 03       		.byte	3
+  50 0026 00000000 		.space	14
+  50      00000000 
+  50      00000000 
+  50      0000
+  51              		.global	proj_geometry
+  52              		.align	2
+  55              	proj_geometry:
+  56 0034 04000000 		.word	4
+  57 0038 02000000 		.word	2
+  58 003c 02000000 		.word	2
+  59 0040 00       		.byte	0
+  60 0041 00       		.byte	0
+  61 0042 00       		.byte	0
+  62 0043 01       		.byte	1
+  63 0044 01       		.byte	1
+  64 0045 00       		.byte	0
+  65 0046 01       		.byte	1
+  66 0047 01       		.byte	1
+  67 0048 00000000 		.space	32
+  67      00000000 
+  67      00000000 
+  67      00000000 
+  67      00000000 
+  68              		.global	enemy_geometry
+  69              		.align	2
+  72              	enemy_geometry:
+  73 0068 08000000 		.word	8
+  74 006c 03000000 		.word	3
+  75 0070 07000000 		.word	7
+  76 0074 00       		.byte	0
+  77 0075 00       		.byte	0
+  78 0076 01       		.byte	1
+  79 0077 01       		.byte	1
+  80 0078 02       		.byte	2
+  81 0079 02       		.byte	2
+  82 007a 01       		.byte	1
+  83 007b 03       		.byte	3
+  84 007c 02       		.byte	2
+  85 007d 03       		.byte	3
+  86 007e 02       		.byte	2
+  87 007f 04       		.byte	4
+  88 0080 01       		.byte	1
+  89 0081 05       		.byte	5
+  90 0082 00       		.byte	0
+  91 0083 06       		.byte	6
+  92 0084 00000000 		.space	24
+  92      00000000 
+  92      00000000 
+  92      00000000 
+  92      00000000 
+  93              		.align	2
+  96              	player:
+  97 009c 00000000 		.word	player_geometry
+  98 00a0 00000000 		.word	0
+  99 00a4 00000000 		.word	0
+ 100 00a8 01000000 		.word	1
+ 101 00ac 01000000 		.word	1
+ 102 00b0 00000000 		.word	draw_object
+ 103 00b4 00000000 		.word	clear_object
+ 104 00b8 00000000 		.word	move_object
+ 105 00bc 00000000 		.word	set_object_speed
+ 106              		.align	2
+ 109              	projectile:
+ 110 00c0 00000000 		.word	proj_geometry
+ 111 00c4 0A000000 		.word	10
+ 112 00c8 00000000 		.word	0
+ 113 00cc 00000000 		.word	0
+ 114 00d0 40000000 		.word	64
+ 115 00d4 00000000 		.word	draw_object
+ 116 00d8 00000000 		.word	clear_object
+ 117 00dc 00000000 		.word	move_object
+ 118 00e0 00000000 		.word	set_object_speed
+ 119              		.section	.start_section,"ax",%progbits
+ 120              		.align	1
+ 121              		.global	startup
+ 122              		.syntax unified
+ 123              		.code	16
+ 124              		.thumb_func
+ 125              		.fpu softvfp
+ 127              	startup:
+ 128              	.LFB0:
+ 129              		.file 1 "C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/
+   1:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** /*
+   2:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c ****  * 	startup.c
+   3:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c ****  *
+   4:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c ****  */
+   5:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c ****  
+   6:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** #include "graphicdisplay.h"
+   7:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** #include "object.h"
+   8:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** #include "keyboard.h"
+   9:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 
+  10:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** GEOMETRY player_geometry = {
+  11:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 	13,
+  12:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 	5,4,
+  13:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 	{
+  14:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 		{0,0}, 	{0,1}, 
+  15:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 				{1,1}, 	{2,1}, 	{3,1},
+  16:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 				{1,2}, 	{2,2}, 			{4,2}, 
+  17:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 		{0,3}, 	{1,3}, 	{2,3}, 	{3,3}, 	{4,3}
+  18:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 	}
+  19:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** };
+  20:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 
+  21:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** GEOMETRY proj_geometry = {
+  22:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 	4,
+  23:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 	2,2,
+  24:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 	{
+  25:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 		{0,0},	{0,1},
+  26:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 		{1,0},	{1,1}
+  27:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 	}
+  28:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** };
+  29:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 
+  30:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** GEOMETRY enemy_geometry = {
+  31:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 	8,
+  32:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 	3,7,
+  33:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 	{
+  34:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 		{0,0},
+  35:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 				{1,1},
+  36:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 						{2,2},
+  37:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 				{1,3}, 	{2,3},
+  38:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 						{2,4},
+  39:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 				{1,5},
+  40:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 		{0,6}
+  41:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 	}
+  42:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** };
+  43:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 
+  44:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** static OBJECT player = {
+  45:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 	&player_geometry,
+  46:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 	0,0,
+  47:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 	1,1,
+  48:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 	draw_object,
+  49:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 	clear_object,
+  50:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 	move_object,
+  51:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 	set_object_speed
+  52:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** };
+  53:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 
+  54:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** static OBJECT projectile = {
+  55:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 	&proj_geometry,
+  56:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 	10, 0,
+  57:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 	0, 64,
+  58:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 	draw_object,
+  59:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 	clear_object,
+  60:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 	move_object,
+  61:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 	set_object_speed
+  62:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** };
+  63:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 
+  64:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** void startup(void) __attribute__((naked)) __attribute__((section (".start_section")) );
+  65:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 
+  66:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** void startup (void) {
+ 130              		.loc 1 66 0
+ 131              		.cfi_startproc
+ 132              		@ Naked Function: prologue and epilogue provided by programmer.
+ 133              		@ args = 0, pretend = 0, frame = 0
+ 134              		@ frame_needed = 1, uses_anonymous_args = 0
+  67:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** __asm volatile(
+ 135              		.loc 1 67 0
+ 136              		.syntax divided
+ 137              	@ 67 "C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT0
+ 138 0000 0248     		 LDR R0,=0x2001C000
+ 139 0002 8546     	 MOV SP,R0
+ 140 0004 FFF7FEFF 	 BL main
+ 141 0008 FEE7     	_exit: B .
+ 142              	
+ 143              	@ 0 "" 2
+  68:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 	" LDR R0,=0x2001C000\n"		/* set stack */
+  69:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 	" MOV SP,R0\n"
+  70:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 	" BL main\n"				/* call main */
+  71:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 	"_exit: B .\n"				/* never return */
+  72:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 	) ;
+  73:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** }
+ 144              		.loc 1 73 0
+ 145              		.thumb
+ 146              		.syntax unified
+ 147 000a C046     		nop
+ 148              		.cfi_endproc
+ 149              	.LFE0:
+ 151              		.text
+ 152              		.align	1
+ 153              		.global	init_app
+ 154              		.syntax unified
+ 155              		.code	16
+ 156              		.thumb_func
+ 157              		.fpu softvfp
+ 159              	init_app:
+ 160              	.LFB1:
+  74:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 
+  75:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** void init_app(void) {
+ 161              		.loc 1 75 0
+ 162              		.cfi_startproc
+ 163              		@ args = 0, pretend = 0, frame = 0
+ 164              		@ frame_needed = 1, uses_anonymous_args = 0
+ 165 0000 80B5     		push	{r7, lr}
+ 166              		.cfi_def_cfa_offset 8
+ 167              		.cfi_offset 7, -8
+ 168              		.cfi_offset 14, -4
+ 169 0002 00AF     		add	r7, sp, #0
+ 170              		.cfi_def_cfa_register 7
+  76:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 	PORT_MODER = 0x55555555;
+ 171              		.loc 1 76 0
+ 172 0004 084B     		ldr	r3, .L3
+ 173 0006 094A     		ldr	r2, .L3+4
+ 174 0008 1A60     		str	r2, [r3]
+  77:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 	
+  78:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 	GPIO_MODER = 0x55005555;
+ 175              		.loc 1 78 0
+ 176 000a 094B     		ldr	r3, .L3+8
+ 177 000c 094A     		ldr	r2, .L3+12
+ 178 000e 1A60     		str	r2, [r3]
+  79:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 	GPIO_PUPDR = 0x00AA0000;
+ 179              		.loc 1 79 0
+ 180 0010 094B     		ldr	r3, .L3+16
+ 181 0012 AA22     		movs	r2, #170
+ 182 0014 1204     		lsls	r2, r2, #16
+ 183 0016 1A60     		str	r2, [r3]
+  80:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 	GPIO_ODR_HIGH &= 0x00FF;
+ 184              		.loc 1 80 0
+ 185 0018 084B     		ldr	r3, .L3+20
+ 186 001a 084A     		ldr	r2, .L3+20
+ 187 001c 1278     		ldrb	r2, [r2]
+ 188 001e D2B2     		uxtb	r2, r2
+ 189 0020 1A70     		strb	r2, [r3]
+  81:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** }
+ 190              		.loc 1 81 0
+ 191 0022 C046     		nop
+ 192 0024 BD46     		mov	sp, r7
+ 193              		@ sp needed
+ 194 0026 80BD     		pop	{r7, pc}
+ 195              	.L4:
+ 196              		.align	2
+ 197              	.L3:
+ 198 0028 00100240 		.word	1073876992
+ 199 002c 55555555 		.word	1431655765
+ 200 0030 000C0240 		.word	1073875968
+ 201 0034 55550055 		.word	1426085205
+ 202 0038 0C0C0240 		.word	1073875980
+ 203 003c 150C0240 		.word	1073875989
+ 204              		.cfi_endproc
+ 205              	.LFE1:
+ 207              		.align	1
+ 208              		.global	main
+ 209              		.syntax unified
+ 210              		.code	16
+ 211              		.thumb_func
+ 212              		.fpu softvfp
+ 214              	main:
+ 215              	.LFB2:
+  82:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 
+  83:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** int main(int argc, char **argv) {
+ 216              		.loc 1 83 0
+ 217              		.cfi_startproc
+ 218              		@ args = 0, pretend = 0, frame = 24
+ 219              		@ frame_needed = 1, uses_anonymous_args = 0
+ 220 0040 90B5     		push	{r4, r7, lr}
+ 221              		.cfi_def_cfa_offset 12
+ 222              		.cfi_offset 4, -12
+ 223              		.cfi_offset 7, -8
+ 224              		.cfi_offset 14, -4
+ 225 0042 87B0     		sub	sp, sp, #28
+ 226              		.cfi_def_cfa_offset 40
+ 227 0044 00AF     		add	r7, sp, #0
+ 228              		.cfi_def_cfa_register 7
+ 229 0046 7860     		str	r0, [r7, #4]
+ 230 0048 3960     		str	r1, [r7]
+  84:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 	char c;
+  85:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 	POBJECT player = &player;
+ 231              		.loc 1 85 0
+ 232 004a 1023     		movs	r3, #16
+ 233 004c FB18     		adds	r3, r7, r3
+ 234 004e 3B61     		str	r3, [r7, #16]
+  86:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 	POBJECT proj = &proj;
+ 235              		.loc 1 86 0
+ 236 0050 0C23     		movs	r3, #12
+ 237 0052 FB18     		adds	r3, r7, r3
+ 238 0054 FB60     		str	r3, [r7, #12]
+  87:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 	
+  88:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 	init_app();
+ 239              		.loc 1 88 0
+ 240 0056 FFF7FEFF 		bl	init_app
+  89:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 	graphic_initialize();
+ 241              		.loc 1 89 0
+ 242 005a FFF7FEFF 		bl	graphic_initialize
+  90:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 	
+  91:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 	#ifndef SIMULATOR
+  92:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 		graphic_clear_screen();
+ 243              		.loc 1 92 0
+ 244 005e FFF7FEFF 		bl	graphic_clear_screen
+  93:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 	#endif
+  94:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 	
+  95:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 	player->set_speed(player,4,1);
+ 245              		.loc 1 95 0
+ 246 0062 3B69     		ldr	r3, [r7, #16]
+ 247 0064 1B6A     		ldr	r3, [r3, #32]
+ 248 0066 3869     		ldr	r0, [r7, #16]
+ 249 0068 0122     		movs	r2, #1
+ 250 006a 0421     		movs	r1, #4
+ 251 006c 9847     		blx	r3
+ 252              	.LVL0:
+ 253              	.L10:
+ 254              	.LBB2:
+  96:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 	while(1) {
+  97:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 		player->move(player);
+ 255              		.loc 1 97 0
+ 256 006e 3B69     		ldr	r3, [r7, #16]
+ 257 0070 DB69     		ldr	r3, [r3, #28]
+ 258 0072 3A69     		ldr	r2, [r7, #16]
+ 259 0074 1000     		movs	r0, r2
+ 260 0076 9847     		blx	r3
+ 261              	.LVL1:
+  98:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 		proj->move(proj);
+ 262              		.loc 1 98 0
+ 263 0078 FB68     		ldr	r3, [r7, #12]
+ 264 007a DB69     		ldr	r3, [r3, #28]
+ 265 007c FA68     		ldr	r2, [r7, #12]
+ 266 007e 1000     		movs	r0, r2
+ 267 0080 9847     		blx	r3
+ 268              	.LVL2:
+  99:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 		delay_milli(40);
+ 269              		.loc 1 99 0
+ 270 0082 2820     		movs	r0, #40
+ 271 0084 FFF7FEFF 		bl	delay_milli
+ 100:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 		c = keyboard();
+ 272              		.loc 1 100 0
+ 273 0088 1723     		movs	r3, #23
+ 274 008a FC18     		adds	r4, r7, r3
+ 275 008c FFF7FEFF 		bl	keyboard
+ 276 0090 0300     		movs	r3, r0
+ 277 0092 2370     		strb	r3, [r4]
+ 101:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 		
+ 102:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 		switch(c) {
+ 278              		.loc 1 102 0
+ 279 0094 1723     		movs	r3, #23
+ 280 0096 FB18     		adds	r3, r7, r3
+ 281 0098 1B78     		ldrb	r3, [r3]
+ 282 009a 022B     		cmp	r3, #2
+ 283 009c 02D0     		beq	.L7
+ 284 009e 082B     		cmp	r3, #8
+ 285 00a0 08D0     		beq	.L8
+ 286 00a2 0EE0     		b	.L11
+ 287              	.L7:
+ 103:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 			case 2: player->set_speed(player,0,-2); break;
+ 288              		.loc 1 103 0
+ 289 00a4 3B69     		ldr	r3, [r7, #16]
+ 290 00a6 1B6A     		ldr	r3, [r3, #32]
+ 291 00a8 3869     		ldr	r0, [r7, #16]
+ 292 00aa 0222     		movs	r2, #2
+ 293 00ac 5242     		rsbs	r2, r2, #0
+ 294 00ae 0021     		movs	r1, #0
+ 295 00b0 9847     		blx	r3
+ 296              	.LVL3:
+ 297 00b2 0CE0     		b	.L9
+ 298              	.L8:
+ 104:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 			case 8: player->set_speed(player,0,2); break;
+ 299              		.loc 1 104 0
+ 300 00b4 3B69     		ldr	r3, [r7, #16]
+ 301 00b6 1B6A     		ldr	r3, [r3, #32]
+ 302 00b8 3869     		ldr	r0, [r7, #16]
+ 303 00ba 0222     		movs	r2, #2
+ 304 00bc 0021     		movs	r1, #0
+ 305 00be 9847     		blx	r3
+ 306              	.LVL4:
+ 307 00c0 05E0     		b	.L9
+ 308              	.L11:
+ 105:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 			//case 5: break;
+ 106:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 			default: player->set_speed(player,0,0);
+ 309              		.loc 1 106 0
+ 310 00c2 3B69     		ldr	r3, [r7, #16]
+ 311 00c4 1B6A     		ldr	r3, [r3, #32]
+ 312 00c6 3869     		ldr	r0, [r7, #16]
+ 313 00c8 0022     		movs	r2, #0
+ 314 00ca 0021     		movs	r1, #0
+ 315 00cc 9847     		blx	r3
+ 316              	.LVL5:
+ 317              	.L9:
+ 318              	.LBE2:
+  96:C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/DAT017_Game/SideScroller\startup.c **** 		player->move(player);
+ 319              		.loc 1 96 0
+ 320 00ce CEE7     		b	.L10
+ 321              		.cfi_endproc
+ 322              	.LFE2:
+ 324              	.Letext0:
+ 325              		.file 2 "C:/Users/Mr Cornholio/Documents/TheBeesKnees/Ar2/DAT017_Maskinorienterad_Programmering/C/

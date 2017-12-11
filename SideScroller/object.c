@@ -60,13 +60,30 @@ void clear_object(POBJECT o) {
 // clears from pos A and then moves to pos B, taking in consideration walls (or in this case the edge of the screen)
 void move_object(POBJECT o) {
 	clear_object(o);
+	
+	if(o->posx < 1 || o->posx + o->geo->sizex > 128)
+		o->dirx = 0;
+	if(o->posy < 1 || o->posy + o->geo->sizey > 64)
+		o->diry = 0;
+	
 	o->posx += o->dirx;
 	o->posy += o->diry;
 	
-	if(o->posx < 1 || o->posx + o->geo->sizex > 128)
-		o->dirx = -o->dirx;
-	if(o->posy < 1 || o->posy + o->geo->sizey > 64)
-		o->diry = -o->diry;
+	draw_object(o);
+}
+
+void move_proj_object(POBJECT o, POBJECT p) {
+	clear_object(o);
+	
+	if(o->posx < 1 || o->posx + o->geo->sizex > 128) {
+		o->posx = p->posx+4;
+		o->posy = p->posy+2;
+	}
+	/*if(o->posy < 1 || o->posy + o->geo->sizey > 64)
+		o->diry = 0;*/
+	
+	o->posx += o->dirx;
+	o->posy += o->diry;
 	
 	draw_object(o);
 }
