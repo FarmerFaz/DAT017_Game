@@ -1,3 +1,3 @@
 .codelite
-*.workspace.xml
+*.workspace
 Makefile
