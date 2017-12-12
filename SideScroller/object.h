@@ -23,9 +23,9 @@ typedef struct tObj {
 } OBJECT, *POBJECT;
 
 typedef struct projectile {
-	tObj obj;
-	void(*move_special)(struct projectile *, struct tObj*)
-}
+	POBJECT obj;
+	void(*move_special)(struct projectile *, struct tObj*);
+} PROJECTILE, *PPROJECTILE;
 
 // changes the objects speed
 void set_object_speed(POBJECT o, int speedx, int speedy);
@@ -38,3 +38,5 @@ void clear_object(POBJECT o);
 
 // clears from pos A and then moves to pos B, taking in consideration walls (or in this case the edge of the screen)
 void move_object(POBJECT o);
+
+void move_proj_object(PPROJECTILE o, POBJECT p);

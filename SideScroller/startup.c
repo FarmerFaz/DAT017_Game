@@ -51,28 +51,20 @@ static OBJECT player_object = {
 	set_object_speed
 };
 
-//static OBJECT proj_object = {
-//	&proj_geometry,
-//	10, 0,
-//	0, 64,
-//	draw_object,
-//	clear_object,
-//	move_object,
-//	set_object_speed
-//};
+static OBJECT proj_small_object = {
+	&proj_geometry,
+	10, 0,
+	0, 64,
+	draw_object,
+	clear_object,
+	move_object,
+	set_object_speed
+};
 
 static PROJECTILE proj_object = {
-  {
-  	&proj_geometry,
-  	10, 0,
-  	0, 64,
-  	draw_object,
-  	clear_object,
-  	move_object,
-  	set_object_speed
-  },
+  &proj_small_object,
   move_proj_object
-}
+};
 
 void startup(void) __attribute__((naked)) __attribute__((section (".start_section")) );
 
@@ -96,7 +88,7 @@ void init_app(void) {
 int main(int argc, char **argv) {
 	char c;
 	POBJECT player = &player_object;
-  PPROJECTILE projectile = &proj_object
+	PPROJECTILE proj = &proj_object;
 
 	init_app();
 	graphic_initialize();
@@ -108,7 +100,7 @@ int main(int argc, char **argv) {
 	player->set_speed(player,4,1);
 	while(1) {
 		player->move(player);
-    projectile->move_special(projectile,player)
+		proj->move_special(proj,player);
 		delay_milli(40);
 		c = keyboard();
 

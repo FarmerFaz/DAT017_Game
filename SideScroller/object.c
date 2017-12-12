@@ -25,7 +25,7 @@ typedef struct tObj {
 typedef struct projectile {
 	POBJECT obj;
 	void(*move_special)(struct projectile *, struct tObj*)
-} PROJECTILE, *PPROJECTILE
+} PROJECTILE, *PPROJECTILE;
 
 // changes the objects speed
 void set_object_speed(POBJECT o, int speedx, int speedy) {
@@ -77,12 +77,12 @@ void move_object(POBJECT o) {
 	draw_object(o);
 }
 
-void move_proj_object(POBJECT o, POBJECT p) {
+void move_proj_object(PPROJECTILE o, POBJECT p) {
 	clear_object(o->obj);
 
 	if(o->obj->posx < 1 || o->obj->posx + o->obj->geo->sizex > 128) {
 		o->obj->posx = p->posx+4;
-		o->posy = p->posy+2;
+		o->obj->posy = p->posy+2;
 	}
 	/*if(o->posy < 1 || o->posy + o->geo->sizey > 64)
 		o->diry = 0;*/
@@ -90,5 +90,5 @@ void move_proj_object(POBJECT o, POBJECT p) {
 	o->obj->posx += o->obj->dirx;
 	o->obj->posy += o->obj->diry;
 
-	draw_object(o);
+	draw_object(o->obj);
 }
