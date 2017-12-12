@@ -1,1 +1,0 @@
-./Debug/startup.c.o ./Debug/delay.c.o ./Debug/graphicdisplay.c.o ./Debug/keyboard.c.o ./Debug/object.c.o   
