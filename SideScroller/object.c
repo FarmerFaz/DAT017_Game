@@ -22,6 +22,11 @@ typedef struct tObj {
 	void(*set_speed)(struct tObj *, int, int);
 } OBJECT, *POBJECT;
 
+typedef struct projectile {
+	POBJECT obj;
+	void(*move_special)(struct projectile *, struct tObj*)
+} PROJECTILE, *PPROJECTILE
+
 // changes the objects speed
 void set_object_speed(POBJECT o, int speedx, int speedy) {
 	o->dirx = speedx;
@@ -38,7 +43,7 @@ void draw_object(POBJECT o) {
 	for (int i = 0; i < o->geo->numpoints; i++) {
 		offsx = o->geo->px[i].x;
 		offsy = o->geo->px[i].y;
-		
+
 		pixel(xx+offsx,yy+offsy, 1);
 	}
 }
@@ -52,7 +57,7 @@ void clear_object(POBJECT o) {
 	for (int i = 0; i < o->geo->numpoints; i++) {
 		offsx = o->geo->px[i].x;
 		offsy = o->geo->px[i].y;
-		
+
 		pixel(xx+offsx,yy+offsy, 0);
 	}
 }
@@ -60,30 +65,30 @@ void clear_object(POBJECT o) {
 // clears from pos A and then moves to pos B, taking in consideration walls (or in this case the edge of the screen)
 void move_object(POBJECT o) {
 	clear_object(o);
-	
+
 	if(o->posx < 1 || o->posx + o->geo->sizex > 128)
 		o->dirx = 0;
 	if(o->posy < 1 || o->posy + o->geo->sizey > 64)
 		o->diry = 0;
-	
+
 	o->posx += o->dirx;
 	o->posy += o->diry;
-	
+
 	draw_object(o);
 }
 
 void move_proj_object(POBJECT o, POBJECT p) {
-	clear_object(o);
-	
-	if(o->posx < 1 || o->posx + o->geo->sizex > 128) {
-		o->posx = p->posx+4;
+	clear_object(o->obj);
+
+	if(o->obj->posx < 1 || o->obj->posx + o->obj->geo->sizex > 128) {
+		o->obj->posx = p->posx+4;
 		o->posy = p->posy+2;
 	}
 	/*if(o->posy < 1 || o->posy + o->geo->sizey > 64)
 		o->diry = 0;*/
-	
-	o->posx += o->dirx;
-	o->posy += o->diry;
-	
+
+	o->obj->posx += o->obj->dirx;
+	o->obj->posy += o->obj->diry;
+
 	draw_object(o);
 }

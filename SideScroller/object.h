@@ -22,6 +22,11 @@ typedef struct tObj {
 	void(*set_speed)(struct tObj *, int, int);
 } OBJECT, *POBJECT;
 
+typedef struct projectile {
+	tObj obj;
+	void(*move_special)(struct projectile *, struct tObj*)
+}
+
 // changes the objects speed
 void set_object_speed(POBJECT o, int speedx, int speedy);
 

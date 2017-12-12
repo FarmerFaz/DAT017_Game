@@ -2,7 +2,7 @@
  * 	startup.c
  *
  */
- 
+
 #include "graphicdisplay.h"
 #include "object.h"
 #include "keyboard.h"
@@ -11,9 +11,9 @@ GEOMETRY player_geometry = {
 	13,
 	5,4,
 	{
-		{0,0}, 	{0,1}, 
+		{0,0}, 	{0,1},
 				{1,1}, 	{2,1}, 	{3,1},
-				{1,2}, 	{2,2}, 			{4,2}, 
+				{1,2}, 	{2,2}, 			{4,2},
 		{0,3}, 	{1,3}, 	{2,3}, 	{3,3}, 	{4,3}
 	}
 };
@@ -41,7 +41,7 @@ GEOMETRY enemy_geometry = {
 	}
 };
 
-static OBJECT player = {
+static OBJECT player_object = {
 	&player_geometry,
 	0,0,
 	1,1,
@@ -51,15 +51,28 @@ static OBJECT player = {
 	set_object_speed
 };
 
-static OBJECT projectile = {
-	&proj_geometry,
-	10, 0,
-	0, 64,
-	draw_object,
-	clear_object,
-	move_object,
-	set_object_speed
-};
+//static OBJECT proj_object = {
+//	&proj_geometry,
+//	10, 0,
+//	0, 64,
+//	draw_object,
+//	clear_object,
+//	move_object,
+//	set_object_speed
+//};
+
+static PROJECTILE proj_object = {
+  {
+  	&proj_geometry,
+  	10, 0,
+  	0, 64,
+  	draw_object,
+  	clear_object,
+  	move_object,
+  	set_object_speed
+  },
+  move_proj_object
+}
 
 void startup(void) __attribute__((naked)) __attribute__((section (".start_section")) );
 
@@ -74,7 +87,7 @@ __asm volatile(
 
 void init_app(void) {
 	PORT_MODER = 0x55555555;
-	
+
 	GPIO_MODER = 0x55005555;
 	GPIO_PUPDR = 0x00AA0000;
 	GPIO_ODR_HIGH &= 0x00FF;
@@ -82,21 +95,23 @@ void init_app(void) {
 
 int main(int argc, char **argv) {
 	char c;
-	POBJECT player = &player;
-	
+	POBJECT player = &player_object;
+  PPROJECTILE projectile = &proj_object
+
 	init_app();
 	graphic_initialize();
-	
+
 	#ifndef SIMULATOR
 		graphic_clear_screen();
 	#endif
-	
+
 	player->set_speed(player,4,1);
 	while(1) {
 		player->move(player);
+    projectile->move_special(projectile,player)
 		delay_milli(40);
 		c = keyboard();
-		
+
 		switch(c) {
 			case 2: player->set_speed(player,0,-2); break;
 			case 8: player->set_speed(player,0,2); break;
@@ -105,4 +120,3 @@ int main(int argc, char **argv) {
 		}
 	}
 }
-
