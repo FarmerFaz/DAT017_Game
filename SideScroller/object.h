@@ -28,7 +28,7 @@ typedef struct tObj {
 
 typedef struct projectile {
     POBJECT obj;
-
+	unsigned int score;
     void (*move_special)(struct projectile *, POBJECT, POBJECT pObj);
 } PROJECTILE, *PPROJECTILE;
 

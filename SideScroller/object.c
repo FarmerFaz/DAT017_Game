@@ -52,7 +52,7 @@ typedef struct enemy {
 
 typedef struct projectile {
     POBJECT obj;
-
+	unsigned int score;
     void (*move_special)(struct projectile *, struct tObj *);
 } PROJECTILE, *PPROJECTILE;
 
@@ -94,11 +94,14 @@ void clear_object(POBJECT o) {
 // clears from pos A and then moves to pos B, taking in consideration walls (or in this case the edge of the screen)
 void move_object(POBJECT o) {
     clear_object(o);
-
-    if (o->posx < 1 || o->posx + o->geo->sizex > 128)
-        o->dirx = 0;
-    if (o->posy < 1 || o->posy + o->geo->sizey > 64)
+	
+    if (o->posy < 1) {
         o->diry = 0;
+		o->posy = 1;
+	} else if (o->posy + o->geo->sizey > 64) {
+		o->diry = 0;
+		o->posy = 64;
+	}
 
     o->posx += o->dirx;
     o->posy += o->diry;
@@ -106,6 +109,7 @@ void move_object(POBJECT o) {
     draw_object(o);
 }
 
+// completely "random" function
 static int random(int offs) {
     randCount += 1 + offs * 3;
     if (randCount > 254)
@@ -114,14 +118,9 @@ static int random(int offs) {
     return rv;
 }
 
+// move an enemy object
 void move_enemy_object(POBJECT o) {
     clear_object(o);
-
-    if (o->posx < 4) {
-        o->posx = 130;
-
-        o->posy = random(o->posy);
-    }
 
     o->posx += o->dirx;
     o->posy += o->diry;
@@ -129,13 +128,14 @@ void move_enemy_object(POBJECT o) {
     draw_object(o);
 }
 
-
+// special move function for a projectile object
 void move_proj_object(PPROJECTILE o, POBJECT p, POBJECT e) {
     clear_object(o->obj);
 
+	// if projectile object moves offscreen, make it "disappear"
     if (o->obj->posx < 1 || o->obj->posx + o->obj->geo->sizex > 128) {
-        o->obj->posx = p->posx + 4;
-        o->obj->posy = p->posy + 2;
+        o->obj->posx = 150;
+        o->obj->posy = -10;
     }
     /*if(o->posy < 1 || o->posy + o->geo->sizey > 64)
         o->diry = 0;*/
@@ -145,13 +145,15 @@ void move_proj_object(PPROJECTILE o, POBJECT p, POBJECT e) {
     int ox = o->obj->posx;
     int oy = o->obj->posy + o->obj->geo->sizey / 2;
 
+	// if projectile object hits an enemy, make both the enemy and the projectile "disappear"
     if (ox > ex - 10 && ox < ex + 10 && oy > ey - 10 && oy < ey + 10) {
+		o->score++;
         clear_object(e);
         e->posx = 130;
         e->posy = random(e->posy);
 
-        o->obj->posx = p->posx + 4;
-        o->obj->posy = p->posy + 2;
+        o->obj->posx = 150;
+        o->obj->posy = -10;
     }
 
     o->obj->posx += o->obj->dirx;

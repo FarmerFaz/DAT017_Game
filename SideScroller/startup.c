@@ -4,6 +4,7 @@
  */
 
 #include "graphicdisplay.h"
+#include "asciidisplay.h"
 #include "object.h"
 #include "keyboard.h"
 #include "delay.h"
@@ -12,10 +13,10 @@ GEOMETRY player_geometry = {
         13,
         5, 4,
         {
-                {0, 0}, {0, 1},
-                {1, 1}, {2, 1}, {3, 1},
-                {1, 2}, {2, 2}, {4, 2},
-                {0, 3}, {1, 3}, {2, 3}, {3, 3}, {4, 3}
+			{0, 0},	
+			{0, 1}, {1, 1},	{2, 1}, {3, 1},
+					{1, 2}, {2, 2}, 		{4, 2},
+			{0, 3}, {1, 3}, {2, 3}, {3, 3}, {4, 3}
         }
 };
 
@@ -65,7 +66,7 @@ static OBJECT enemy_object = {
 static OBJECT proj_small_object = {
         &proj_geometry,
         10, 0,
-        0, 64,
+        150, 64,
         draw_object,
         clear_object,
         move_object,
@@ -74,6 +75,7 @@ static OBJECT proj_small_object = {
 
 static PROJECTILE proj_object = {
         &proj_small_object,
+		0,
         move_proj_object
 };
 
@@ -109,7 +111,15 @@ int main(int argc, char **argv) {
 		graphic_clear_screen();
 	#endif
 
-    player->set_speed(player, 4, 1);
+	ascii_gotoxy(1,1);
+	char scoreString[] = "Score:";
+	char *s = scoreString;
+	while(*s){
+		ascii_write_char(*s++);
+	}
+	
+	unsigned char string[4]; 
+	
     while (1) {
         player->move(player);
         enem->move(enem);
@@ -117,16 +127,56 @@ int main(int argc, char **argv) {
         delay_milli(40);
         c = keyboard();
 
+
         switch (c) {
-            case 2:
+            case 2: // move up
                 player->set_speed(player, 0, -2);
                 break;
-            case 8:
+			case 6: // shoot a projectile
+				if (proj->obj->posy < 0) {
+					proj->obj->posx = player->posx + 4;
+					proj->obj->posy = player->posy +2;
+				}
+				break;
+            case 8: // move down
                 player->set_speed(player, 0, 2);
                 break;
-                //case 5: break;
-            default:
+            default: // don't move
                 player->set_speed(player, 0, 0);
         }
+		
+		// print score
+		ascii_gotoxy(1,2);
+		
+		intToString(proj->score,string);
+		
+		for(int i = 0; i < 3; i++){
+			ascii_write_char(string[i]);
+		}
+		
+		// check gameover
+		if (enem->posx < -10){
+			char gameoverString[] ="  Game Over!";
+			s = gameoverString;
+			while(*s){
+				ascii_write_char(*s++);
+			}
+			while(1);
+		}
     }
+}
+
+
+int mod(int a, int mod){
+	return a - ((a / mod) * mod);
+}
+
+void intToString(int integer, unsigned char* string){
+	int v = integer/100;
+	string[0] = v+48;
+	v = mod(integer,100) / 10;
+	string[1] = v+48;
+	v = mod(integer,10);
+	string[2] = v+48;
+	string[3] = "\0";
 }
