@@ -137,6 +137,20 @@ void move_proj_object(PPROJECTILE o, POBJECT p, POBJECT e) {
     }
     /*if(o->posy < 1 || o->posy + o->geo->sizey > 64)
         o->diry = 0;*/
+	
+	int ex = e->posx;
+	int ey = e->posy+e->geo->sizey/2;
+	int ox = o->obj->posx;
+	int oy = o->obj->posy+o->obj->geo->sizey/2;
+	
+	if (ox > ex - 10 && ox < ex + 10 && oy > ey - 10 && oy < ey + 10) {
+		clear_object(e);
+		e->posx = 130;
+		e->posy = random();
+		
+		o->obj->posx = p->posx + 4;
+        o->obj->posy = p->posy + 2;
+	}
 
     o->obj->posx += o->obj->dirx;
     o->obj->posy += o->obj->diry;

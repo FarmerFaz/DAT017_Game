@@ -32,20 +32,20 @@ GEOMETRY enemy_geometry = {
         8,
         3, 7,
         {
-                {0, 0},
-                {1, 1},
-                {2, 2},
-                {1, 3}, {2, 3},
-                {2, 4},
-                {1, 5},
-                {0, 6}
+			{0, 0},
+					{1, 1},
+							{2, 2},
+					{1, 3}, {2, 3},
+							{2, 4},
+					{1, 5},
+			{0, 6}
         }
 };
 
 static OBJECT player_object = {
         &player_geometry,
         0, 0,
-        1, 1,
+        1, 32,
         draw_object,
         clear_object,
         move_object,
@@ -54,8 +54,8 @@ static OBJECT player_object = {
 
 static OBJECT enemy_object = {
         &enemy_geometry,
-        130, 32,
         -4, 0,
+        132, 32,
         draw_object,
         clear_object,
         move_enemy_object,
@@ -100,20 +100,20 @@ int main(int argc, char **argv) {
     char c;
     POBJECT player = &player_object;
     PPROJECTILE proj = &proj_object;
-    POBJECT enemy = &enemy_object;
+    POBJECT enem = &enemy_object;
 
     init_app();
     graphic_initialize();
 
-#ifndef SIMULATOR
-    graphic_clear_screen();
-#endif
+	#ifndef SIMULATOR
+		graphic_clear_screen();
+	#endif
 
     player->set_speed(player, 4, 1);
     while (1) {
         player->move(player);
-        enemy->move(enemy);
-        proj->move_special(proj, player, enemy);
+        enem->move(enem);
+        proj->move_special(proj, player, enem);
         delay_milli(40);
         c = keyboard();
 
