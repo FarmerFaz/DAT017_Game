@@ -1,4 +1,6 @@
 
+#include "graphicdisplay.h"
+
 #define    MAX_POINTS    20
 
 
@@ -104,21 +106,21 @@ void move_object(POBJECT o) {
     draw_object(o);
 }
 
-int random() {
-    int rv = rand[randCount];
-    randCount += 1;
-    if (randCount > 255)
+static int random(int offs) {
+    randCount += 1 + offs * 3;
+    if (randCount > 254)
         randCount = 0;
+	int rv = rand[randCount];
     return rv;
 }
 
 void move_enemy_object(POBJECT o) {
     clear_object(o);
 
-    if (o->posx < 1) {
+    if (o->posx < 4) {
         o->posx = 130;
 
-        o->posy = random();
+        o->posy = random(o->posy);
     }
 
     o->posx += o->dirx;
@@ -137,20 +139,20 @@ void move_proj_object(PPROJECTILE o, POBJECT p, POBJECT e) {
     }
     /*if(o->posy < 1 || o->posy + o->geo->sizey > 64)
         o->diry = 0;*/
-	
-	int ex = e->posx;
-	int ey = e->posy+e->geo->sizey/2;
-	int ox = o->obj->posx;
-	int oy = o->obj->posy+o->obj->geo->sizey/2;
-	
-	if (ox > ex - 10 && ox < ex + 10 && oy > ey - 10 && oy < ey + 10) {
-		clear_object(e);
-		e->posx = 130;
-		e->posy = random();
-		
-		o->obj->posx = p->posx + 4;
+
+    int ex = e->posx;
+    int ey = e->posy + e->geo->sizey / 2;
+    int ox = o->obj->posx;
+    int oy = o->obj->posy + o->obj->geo->sizey / 2;
+
+    if (ox > ex - 10 && ox < ex + 10 && oy > ey - 10 && oy < ey + 10) {
+        clear_object(e);
+        e->posx = 130;
+        e->posy = random(e->posy);
+
+        o->obj->posx = p->posx + 4;
         o->obj->posy = p->posy + 2;
-	}
+    }
 
     o->obj->posx += o->obj->dirx;
     o->obj->posy += o->obj->diry;

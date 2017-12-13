@@ -36,9 +36,9 @@ void delay_mikro(unsigned int us) {
 // runs delay_mikro 1000 times per ms
 void delay_milli(unsigned int ms) {
 	#ifdef SIMULATOR
-		ms = ms / 1000;
-		ms++;
+		delay_250ns();
+		return;
 	#endif
 	
-	delay_mikro(ms);
+	delay_mikro(1000*ms);
 }
