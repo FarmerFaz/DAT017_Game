@@ -55,7 +55,7 @@ static OBJECT player_object = {
 
 static OBJECT enemy_object = {
         &enemy_geometry,
-        -4, 0,
+        -1, 0,
         132, 32,
         draw_object,
         clear_object,
@@ -96,6 +96,19 @@ void init_app(void) {
     GPIO_MODER = 0x55005555;
     GPIO_PUPDR = 0x00AA0000;
     GPIO_ODR_HIGH &= 0x00FF;
+	
+	// initialize the displays
+	ascii_init();
+	graphic_initialize();
+}
+
+char scoreString[] = "Score:";
+void write_score(void) {
+	ascii_gotoxy(6,1);
+	char *s = scoreString;
+	while(*s){
+		ascii_write_char(*s++);
+	}
 }
 
 int main(int argc, char **argv) {
@@ -105,18 +118,12 @@ int main(int argc, char **argv) {
     POBJECT enem = &enemy_object;
 
     init_app();
-    graphic_initialize();
 
 	#ifndef SIMULATOR
 		graphic_clear_screen();
 	#endif
 
-	ascii_gotoxy(1,1);
-	char scoreString[] = "Score:";
-	char *s = scoreString;
-	while(*s){
-		ascii_write_char(*s++);
-	}
+	write_score();
 	
 	unsigned char string[4]; 
 	
@@ -130,7 +137,7 @@ int main(int argc, char **argv) {
 
         switch (c) {
             case 2: // move up
-                player->set_speed(player, 0, -2);
+                player->set_speed(player, 0, -4);
                 break;
 			case 6: // shoot a projectile
 				if (proj->obj->posy < 0) {
@@ -139,14 +146,14 @@ int main(int argc, char **argv) {
 				}
 				break;
             case 8: // move down
-                player->set_speed(player, 0, 2);
+                player->set_speed(player, 0, 4);
                 break;
             default: // don't move
                 player->set_speed(player, 0, 0);
         }
 		
 		// print score
-		ascii_gotoxy(1,2);
+		ascii_gotoxy(12,1);
 		
 		intToString(proj->score,string);
 		
@@ -156,21 +163,33 @@ int main(int argc, char **argv) {
 		
 		// check gameover
 		if (enem->posx < -10){
-			char gameoverString[] ="  Game Over!";
-			s = gameoverString;
+			ascii_gotoxy(6,2);
+			char gameoverString[] ="Game Over!";
+			char *s = gameoverString;
 			while(*s){
 				ascii_write_char(*s++);
 			}
-			while(1);
+			while(1) {
+				if (keyboard() == 13) {
+					player->posy = 32;
+					enem->posy = 32; enem->posx = 130; enem->dirx = -1; enem->diry = 0;
+					proj->obj->posx = 150; proj->score = 0;
+					ascii_clear_screen();
+					graphic_clear_screen();
+					write_score();
+					break;
+				}
+			}
 		}
     }
 }
 
-
+// modulo function
 int mod(int a, int mod){
 	return a - ((a / mod) * mod);
 }
 
+// convert an int to a string
 void intToString(int integer, unsigned char* string){
 	int v = integer/100;
 	string[0] = v+48;

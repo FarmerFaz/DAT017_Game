@@ -95,17 +95,16 @@ void clear_object(POBJECT o) {
 void move_object(POBJECT o) {
     clear_object(o);
 	
-    if (o->posy < 1) {
-        o->diry = 0;
-		o->posy = 1;
-	} else if (o->posy + o->geo->sizey > 64) {
-		o->diry = 0;
-		o->posy = 64;
-	}
+    
 
     o->posx += o->dirx;
     o->posy += o->diry;
-
+	
+	if (o->posy < 1) {
+		o->posy = 1;
+	} else if (o->posy + o->geo->sizey > 60) {
+		o->posy = 60;
+	}
     draw_object(o);
 }
 
@@ -121,12 +120,18 @@ static int random(int offs) {
 // move an enemy object
 void move_enemy_object(POBJECT o) {
     clear_object(o);
+	
+	if((o->posy < 4 && o->diry < 0) || (o->posy > 60 && o->diry > 0)) {
+		o->diry = -(o->diry);
+	}
 
     o->posx += o->dirx;
     o->posy += o->diry;
 
     draw_object(o);
 }
+
+int mod(int a, int mod);
 
 // special move function for a projectile object
 void move_proj_object(PPROJECTILE o, POBJECT p, POBJECT e) {
@@ -146,7 +151,7 @@ void move_proj_object(PPROJECTILE o, POBJECT p, POBJECT e) {
     int oy = o->obj->posy + o->obj->geo->sizey / 2;
 
 	// if projectile object hits an enemy, make both the enemy and the projectile "disappear"
-    if (ox > ex - 10 && ox < ex + 10 && oy > ey - 10 && oy < ey + 10) {
+    if (ox > ex - 10 && ox < ex + 10 && oy > ey - 4 && oy < ey + 4) {
 		o->score++;
         clear_object(e);
         e->posx = 130;
@@ -154,6 +159,12 @@ void move_proj_object(PPROJECTILE o, POBJECT p, POBJECT e) {
 
         o->obj->posx = 150;
         o->obj->posy = -10;
+		
+		if(mod(o->score, 5) == 0)
+			e->dirx -= 1;
+		if(o->score >= 5)
+			e->diry = mod(random(o->score), 4) - 2;
+		
     }
 
     o->obj->posx += o->obj->dirx;

@@ -93,7 +93,16 @@ void ascii_write_char(unsigned char c) {
 	delay_mikro(43);
 }
 
+void ascii_clear_screen(void) {
+	while(ascii_read_status() & 0x80) {}
+	delay_mikro(20);
+	ascii_write_cmd(0b00000001);	// clear screen
+	delay_mikro(100);
+}
+
 void ascii_init(void) {
+	ascii_clear_screen();
+	
 	while(ascii_read_status() & 0x80) {}
 	delay_mikro(20);
 	ascii_write_cmd(0b00111000);	// set 2 rows and 5x8 font
@@ -101,7 +110,7 @@ void ascii_init(void) {
 	
 	while(ascii_read_status() & 0x80) {}
 	delay_mikro(20);
-	ascii_write_cmd(0b00001110);	// light display, show cursor constantly
+	ascii_write_cmd(0b00001100);	// light display, show cursor constantly
 	delay_mikro(100);
 	
 	while(ascii_read_status() & 0x80) {}
